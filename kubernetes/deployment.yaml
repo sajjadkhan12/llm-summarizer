@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llm-summarizer
+  namespace: llm
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: llm-summarizer
+  template:
+    metadata:
+      labels:
+        app: llm-summarizer
+    spec:
+      containers:
+      - name: summarizer
+        image: ghcr.io/<your-username>/llm-summarizer:latest
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1"
+          limits:
+            memory: "4Gi"
+            cpu: "2"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
