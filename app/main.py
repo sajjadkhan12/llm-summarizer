@@ -3,7 +3,6 @@ from pydantic import BaseModel
 
 from transformers import BartForConditionalGeneration, BartTokenizer
 import logging
-import os
 
 app = FastAPI(title="Text Summarizer")
 logging.basicConfig(level=logging.INFO)
@@ -19,10 +18,12 @@ except Exception as e:
     logger.error(f"Failed to load model: {e}")
     raise
 
+
 class TextInput(BaseModel):
     text: str
     max_length: int = 100
     min_length: int = 30
+
 
 @app.post("/summarize")
 async def summarize(input: TextInput):
@@ -46,6 +47,7 @@ async def summarize(input: TextInput):
     except Exception as e:
         logger.error(f"Summarization error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.get("/health")
 async def health():
