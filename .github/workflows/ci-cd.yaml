@@ -30,8 +30,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+
+      - name: List files for debugging
+        run: ls -R
+
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/python@master
+        with:
+          args: test --file=app/requirements.txt
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
   setup-build-publish-deploy:
