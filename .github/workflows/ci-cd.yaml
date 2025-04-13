@@ -7,13 +7,6 @@ on:
   pull_request:
     branches:
       - main
-env:
-  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GKE_CLUSTER: cluster-1    # Add your cluster name here.
-  GKE_ZONE: us-central1-c   # Add your cluster zone here.
-  DEPLOYMENT_NAME: gke-test # Add your deployment name here.
-  IMAGE: static-site
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -36,6 +29,7 @@ jobs:
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
+    needs: test
     permissions:
       contents: read
       packages: write
@@ -61,4 +55,4 @@ jobs:
           file: ./Dockerfile 
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/${{ github.repository }}/llm-summarizer:$GITHUB_SHA
+          tags: ghcr.io/${{ github.repository }}:$GITHUB_SHA
