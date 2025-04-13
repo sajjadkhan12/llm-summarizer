@@ -28,14 +28,12 @@ jobs:
       run: pytest app/tests/
   Security-Scans:
     runs-on: ubuntu-latest
-    needs: test
     steps:
-    - name: Snyk Vulnerability Scan
-      uses: snyk/actions@v3
-      with:
-        command: test
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
