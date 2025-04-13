@@ -4,7 +4,7 @@ metadata:
   name: llm-summarizer
   namespace: llm
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: llm-summarizer
@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
       - name: summarizer
-        image: ghcr.io/<your-username>/llm-summarizer:latest
+        image: llm-summarizer:latest
+        imagePullPolicy: Never
         ports:
         - containerPort: 8000
         resources:
@@ -29,5 +30,5 @@ spec:
           httpGet:
             path: /health
             port: 8000
-          initialDelaySeconds: 30
+          initialDelaySeconds: 60
           periodSeconds: 10
