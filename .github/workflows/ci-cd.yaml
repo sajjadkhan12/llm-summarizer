@@ -28,9 +28,10 @@ jobs:
       run: pytest app/tests/
   Security-Scans:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     needs: test
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
 
       - name: List files for debugging
         run: ls -R
